@@ -2,7 +2,7 @@ import {Example} from '../models/example.js';
 
 export class ExampleService {
   static async findAll() {
-    return await Example.find();
+    return await Example.findAll();
   }
 
   static async findById(id) {
@@ -10,15 +10,20 @@ export class ExampleService {
   }
 
   static async create(data) {
-    const example = new Example(data);
-    return await example.save();
+    return await Example.create(data);
   }
 
   static async update(id, data) {
-    return await Example.findByIdAndUpdate(id, data, {new: true, runValidators: true});
+    return await Example.update(id, data);
   }
 
   static async delete(id) {
-    return await Example.findByIdAndDelete(id);
+    const deleted = await Example.delete(id);
+    return deleted ? { success: true } : null;
+  }
+
+  // Initialize database table (useful for setup)
+  static async initializeTable() {
+    await Example.createTable();
   }
 }

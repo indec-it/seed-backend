@@ -1,18 +1,18 @@
-# Express MongoDB Seed
+# Express Oracle Seed
 
-A minimal seed project for building RESTful APIs with Express.js and MongoDB using Mongoose ORM.
+A minimal seed project for building RESTful APIs with Express.js and Oracle Database.
 
 ## Features
 
 - Express.js server with ES6 modules
-- MongoDB integration with Mongoose ORM
+- Oracle Database integration with connection pooling
 - Layered architecture (Controllers, Services, Models)
 - Authentication middleware with external OAuth service
 - Request logging middleware
 - RESTful API structure with protected and public routes
-- Mongoose schema with timestamps
+- Oracle models with timestamps and auto-increment IDs
 - Swagger API documentation with organized tags
-- Jest testing setup with MongoDB Memory Server
+- Jest testing setup for Oracle database
 - Axios for HTTP requests
 - Prettier code formatting
 - Hot reload development with --watch flag
@@ -20,7 +20,8 @@ A minimal seed project for building RESTful APIs with Express.js and MongoDB usi
 ## Prerequisites
 
 - Node.js 22+
-- MongoDB instance (local or remote)
+- Oracle Database instance (local or remote)
+- Oracle Instant Client (if not using Oracle Cloud)
 
 ## Getting Started
 
@@ -35,11 +36,20 @@ A minimal seed project for building RESTful APIs with Express.js and MongoDB usi
 
    ```env
    NODE_ENV=development
-   MONGO_URI=mongodb://localhost:27017/express-seed
    PORT=6091
+
+   # Oracle Database Configuration
+   ORACLE_USER="your_oracle_user"
+   ORACLE_PASSWORD="your_oracle_password"
+   ORACLE_CONNECT_STRING="your_host:1521/your_service_name"
+   ORACLE_POOL_MIN=5
+   ORACLE_POOL_MAX=20
+   ORACLE_POOL_INCREMENT=5
+
+   # Authentication Configuration
    AUTH_CLIENT_ID=""
-   AUTH_ENDPOINT=""
-   AUTH=""
+   AUTH_ENDPOINT="https://qaarqbe.indec.gob.ar/"
+   AUTH="https://qa-ipc.indec.gob.ar"
    ```
 
 4. Start the development server:
@@ -56,7 +66,7 @@ A minimal seed project for building RESTful APIs with Express.js and MongoDB usi
 ├── src/
 │   ├── controllers/    # Route controllers (handle HTTP requests/responses)
 │   ├── services/       # Business logic layer and external API calls
-│   ├── models/         # Mongoose schemas and models
+│   ├── models/         # Oracle database models
 │   ├── routes/         # API routes
 │   │   ├── middlewares/ # Route-specific middlewares (auth, etc.)
 │   │   └── public-api/  # Public API routes (no authentication)
@@ -113,16 +123,18 @@ All requests are logged with the following format:
 
 The project includes comprehensive tests for all layers:
 
-- **Model tests** - Test Mongoose schemas and database operations
+- **Model tests** - Test Oracle database models and operations
 - **Service tests** - Test business logic
 - **Controller tests** - Test HTTP handling with mocked services
 - **Route tests** - Integration tests for complete API endpoints
 
-Tests are configured with Jest and MongoDB Memory Server for isolated testing:
+Tests are configured with Jest and require a real Oracle database connection:
 
 ```bash
 npm test
 ```
+
+**Note**: Tests require Oracle database credentials in your environment variables.
 
 ## Architecture
 
@@ -137,13 +149,12 @@ The project follows a layered architecture:
 
 ### Production
 - **express** - Web framework
-- **mongoose** - MongoDB ODM
+- **oracledb** - Oracle Database driver with connection pooling
 - **axios** - HTTP client for external API calls
 - **swagger-ui-express** - API documentation
 
 ### Development
 - **jest** - Testing framework
-- **mongodb-memory-server** - In-memory MongoDB for tests
 - **prettier** - Code formatting
 - **supertest** - HTTP testing
 
