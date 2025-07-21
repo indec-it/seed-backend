@@ -1,0 +1,8 @@
+tests
+babel.config.js
+jest.config.mjs
+.git
+.nvmrc
+.prettierignore
+.prettierrc.json
+.gitignore
