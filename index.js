@@ -1,5 +1,6 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
+import cors from 'cors';
 
 import {connectDB} from './src/helpers/database.js';
 import apiRoutes from './src/routes/api.js';
@@ -15,6 +16,13 @@ const port = process.env.PORT || 8081;
 
 app.disable('x-powered-by');
 
+app.use(cors({
+  origin: ['http://localhost:6011', 'http://localhost:6091'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(requestLogger);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -27,7 +35,7 @@ app.use((err, req, res, next) => {
 
 const startServer = async () => {
   try {
-    await connectDB();
+    //await connectDB();
     app.listen(port, () => {
       console.log(`Server listening on port ${port}`);
     });

@@ -1,6 +1,7 @@
 process.loadEnvFile();
 import {stringify} from 'querystring';
 import axios from 'axios';
+import https from 'node:https';
 
 const {AUTH_ENDPOINT, AUTH_CLIENT_ID, AUTH} = process.env;
 
@@ -13,7 +14,8 @@ class ArqService {
         'content-type': 'application/json',
         credentials: 'same-origin',
         clientId: AUTH_CLIENT_ID
-      }
+      },
+      httpsAgent: new https.Agent({rejectUnauthorized: false})
     });
   }
 
